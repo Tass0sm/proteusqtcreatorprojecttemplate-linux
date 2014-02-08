@@ -1,6 +1,6 @@
 TARGET = %ProjectName%
 
-GITBINARY := $(FEHQTINSTALL)/Git/bin/git
+GITBINARY := git
 FEHURL := google.com
 FIRMWAREREPO := fehproteusfirmware
 
@@ -18,10 +18,17 @@ ifeq ($(OS),Windows_NT)
 	( \
 		( if exist "$(FIRMWAREREPO)" \
 		( \
-			rd /s /q $(FIRMWAREREPO) \
-		) ) && \
-		$(GITBINARY) config --global http.sslVerify false  && \
-		$(GITBINARY) clone https://redmine.engr1.ohio-state.edu/gitlab/feh/$(FIRMWAREREPO).git \
+			cd $(FIRMWAREREPO) && \
+			$(GITBINARY) stash && \
+			$(GITBINARY) pull && \
+			cd .. \
+		) \
+		else \
+		( \
+			$(GITBINARY) config --global http.sslVerify false  && \
+			$(GITBINARY) clone https://redmine.engr1.ohio-state.edu/gitlab/feh/$(FIRMWAREREPO).git \
+		) \
+		) \
 	)
 else
 # Linux
