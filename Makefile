@@ -1,15 +1,16 @@
 TARGET = %ProjectName%
 
 GITBINARY := git
-FEHURL := google.com
-FIRMWAREREPO := fehproteusfirmware
+TESTURL := google.com
+FIRMWAREREPO := fehproteusfirmware-linux
+FIRMWAREREF := https://github.com/Tass0sm/fehproteusfirmware-linux.git
 
 all:
 ifeq ($(OS),Windows_NT)	
 # check for internet connection
 # if there's internet, check to see if FEHRobotController folder exists
 # if it does, remove it before cloning the repo
-	@ping -n 1 -w 1000 $(FEHURL) > NUL & \
+	@ping -n 1 -w 1000 $(TESTURL) > NUL & \
 	if errorlevel 1 \
 	( \
 		( echo "Warning: No internet connection!" ) \
@@ -26,17 +27,25 @@ ifeq ($(OS),Windows_NT)
 		else \
 		( \
 			$(GITBINARY) config --global http.sslVerify false  && \
-			$(GITBINARY) clone https://redmine.engr1.ohio-state.edu/gitlab/feh/$(FIRMWAREREPO).git \
+			$(GITBINARY) clone $(FIRMWAREREF) \
 		) \
 		) \
-	)
+	) 
 else
-# Linux
-#	if [ -d "FEHRobotControllerFirmware" ]; then \
-#                $(GITBINARY) --git-dir=FEHRobotControllerFirmware/.git pull ; \
-#	else \
-#                $(GITBINARY) clone git://redmine.engr1.ohio-state.edu/FEHRobotControllerFirmware.git ; \
-#	fi
+# Mac/Linux
+	@ping -c 1 -W 1000 $(TESTURL) > /dev/null ; \
+	if [ "$$?" -ne 0 ]; then \
+		echo "Warning: No internet connection to redmine!"; \
+	else \
+		if ! [ -d "$(FIRMWAREREPO)" ]; then \
+			$(GITBINARY) clone $(FIRMWAREREF) ; \
+			if [ -n "$(DEVBRANCH)" ]; then\
+				cd $(FIRMWAREREPO) ; \
+				$(GITBINARY) checkout -b $(DEVBRANCH) origin/$(DEVBRANCH) ; \
+				cd .. ; \
+			fi \
+		fi \
+	fi \
 
 endif
 	@cd $(FIRMWAREREPO) && make all TARGET=$(TARGET)

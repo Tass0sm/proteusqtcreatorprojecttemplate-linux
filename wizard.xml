@@ -40,8 +40,8 @@ leave room for the Qt 4 target page.
 <wizard version="1" kind="project" firstpage="10"
 		id="A.FEHProteus" category="I.Projects">
     <icon>console.png</icon>
-	<description>Creates a template project for use with the FEH Proteus robot controller.</description>
-	<displayname>FEH Proteus</displayname>;
+	<description>Creates a template project for use with the FEH Proteus robot controller sd card.</description>
+	<displayname>FEH Proteus SD</displayname>;
     <displaycategory>Custom Projects</displaycategory>
 
 	<!-- Create a 2nd wizard page with parameters -->
@@ -65,9 +65,13 @@ leave room for the Qt 4 target page.
 		<file source="main.cpp" openeditor="true"/>
 		<file source="Makefile" openeditor="false"/>
 		<file source="Qt-Proteus-Project.config" target="%ProjectName%.config" openeditor="false"/>
-		<file source="Qt-Proteus-Project.files" target="%ProjectName%.files" openeditor="false"/>
+		<file source="Qt-Proteus-Project.txt" target="%ProjectName%.txt" openeditor="false"/>
+        <file source="Qt-Proteus-Project.files" target="%ProjectName%.files" openeditor="false"/>
 		<file source="Qt-Proteus-Project.includes" target="%ProjectName%.includes" openeditor="false"/>
 		<file source="Qt-Proteus-Project.creator" target="%ProjectName%.creator" openproject="true"/>
-		<file source="Qt-Proteus-Project.creator.user" target="%ProjectName%.creator.user" openproject="false"/>
+		<file source="Qt-Proteus-Project.creator.shared" target="%ProjectName%.creator.shared" openproject="false"/>
     </files>
+
+    
+
 </wizard>
